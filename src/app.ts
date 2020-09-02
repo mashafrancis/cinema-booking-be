@@ -8,8 +8,6 @@ import feathers from '@feathersjs/feathers';
 import configuration from '@feathersjs/configuration';
 import express from '@feathersjs/express';
 
-
-
 import { Application } from './declarations';
 import logger from './logger';
 import middleware from './middleware';
