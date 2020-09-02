@@ -18,7 +18,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "https://cinema-booking.com",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"
@@ -30,13 +30,12 @@
     "oauth": {
       "redirect": "/",
       "google": {
-        "key": "<google oauth key>",
-        "secret": "<google oauth secret>",
-        "scope": [
-          "email",
-          "profile",
-          "openid"
-        ]
+        "key": "",
+        "secret": "",
+        "scope": [ "openid", "email", "profile" ],
+        "redirect_uri": "http://cinema-booking.com:3000",
+        "callback": "http://127.0.0.1:3030/oauth/google/callback",
+        "nonce": true
       }
     }
   },

@@ -1,16 +1,36 @@
-import { createLogger, format, transports } from 'winston';
+import {createLogger, format, transports} from 'winston';
 
-// Configure the Winston logger. For the complete documentation see https://github.com/winstonjs/winston
+const {combine, timestamp, printf} = format;
+
+const options = {
+  file: {
+    level: 'info' || 'error',
+    filename: `${__dirname}/../logs/app.log`,
+    handleExceptions: true,
+    json: true,
+    maxsize: 5242880,
+    maxFiles: 5,
+    colorize: true,
+  },
+};
+
 const logger = createLogger({
-  // To see more detailed errors, change this to 'debug'
   level: 'info',
-  format: format.combine(
+  format: combine(
+    timestamp({format: 'YYYY-MM-DD HH:mm:ss'}),
     format.splat(),
-    format.simple()
+    format.json(),
+    printf(({level, message, label, timestamp}) => `${timestamp} [${label}] ${level.toUpperCase()} - ${message}`),
   ),
-  transports: [
-    new transports.Console()
-  ],
+  transports: [process.env.NODE_ENV !== 'development'
+    ? new transports.File(options.file)
+    : new transports.Console({
+      format: format.combine(
+        format.cli(),
+        format.splat(),
+      ),
+    }),
+  ]
 });
 
 export default logger;
