@@ -19,18 +19,14 @@
     "test": "test/",
     "config": "config/"
   },
-  "engines": {
-    "node": "^14.0.0",
-    "yarn": ">= 0.18.0"
-  },
   "scripts": {
-    "test": "yarn run lint && yarn run compile && yarn run jest",
-    "lint": "eslint src/. test/. --config .eslintrc.json --ext .ts --fix",
-    "start:dev": "ts-node-dev --no-notify src/",
+    "compile": "shx rm -rf lib/ && tsc",
+    "start:dev": "NODE_ENV=development nodemon",
     "start:prod": "yarn run compile && node lib/",
-    "test:unit": "jest  --forceExit --runInBand",
-    "test:coverage": "yarn test:unit --coverage",
-    "compile": "shx rm -rf lib/ && tsc"
+    "lint": "eslint src/. test/. --config .eslintrc.json --ext .ts --fix",
+    "test": "yarn run lint && yarn run compile && yarn run jest",
+    "test:unit": "yarn test  --forceExit --runInBand --detectOpenHandles",
+    "test:coverage": "yarn test:unit --coverage"
   },
   "standard": {
     "env": [
@@ -71,6 +67,7 @@
     "axios": "^0.20.0",
     "eslint": "^7.4.0",
     "jest": "^26.4.2",
+    "nodemon": "^2.0.4",
     "shx": "^0.3.2",
     "ts-jest": "^26.3.0",
     "ts-node-dev": "^1.0.0-pre.62",
