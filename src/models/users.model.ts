@@ -7,10 +7,9 @@ import { HookReturn } from 'sequelize/types/lib/hooks';
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
   const users = sequelizeClient.define('users', {
-  
-  
+
     googleId: { type: DataTypes.STRING },
-  
+
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {

@@ -1,13 +1,29 @@
-import logger from './logger';
+import 'reflect-metadata';
 import app from './app';
+import logger from './logger';
 
-const port = app.get('port');
-const server = app.listen(port);
+async function startServer() {
+  const port = app.get('port');
 
-process.on('unhandledRejection', (reason, p) =>
-  logger.error('Unhandled Rejection at: Promise ', p, reason)
-);
+  process.on('uncaughtException', e => {
+    logger.error(`Uncaught Exception: ${e.stack}`, `Error: ${e}`);
+    process.exit(1);
+  });
 
-server.on('listening', () =>
-  logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
-);
+  process.on('unhandledRejection', (reason, p) => {
+    logger.error(`Unhandled Rejection at: ${JSON.stringify(p)}`, `reason:, ${reason}`);
+    process.exit(1);
+  });
+
+  const server = app.listen(port);
+
+  server.on('listening', () =>
+    logger.info(`
+      #####################################################
+      😎  Server listening on http://${app.get('host')}:${port} 😎
+      #####################################################
+    `)
+  );
+}
+
+startServer().catch(err => logger.error(err.message, err.stack));
