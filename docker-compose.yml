@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  app:
+    container_name: cinema
+    image: cinema
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    environment:
+      - DATABASE_URI=postgres://postgres:backend@database:5432/cinemadb
+    ports:
+      - '3030:3030'
+    depends_on:
+      - database
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+
+  database:
+    image: postgres:12.4
+    container_name: database
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=backend
+      - POSTGRES_DB=cinemadb
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+    ports:
+      - '5433:5432'
+    expose:
+      - '5433'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    external: true
+  node_modules:
