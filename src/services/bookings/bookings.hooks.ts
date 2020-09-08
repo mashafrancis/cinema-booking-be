@@ -1,30 +1,29 @@
-import * as feathersAuthentication from '@feathersjs/authentication';
-import * as local from '@feathersjs/authentication-local';
+import * as authentication from '@feathersjs/authentication';
 import {HookContext} from '@feathersjs/feathers';
 import logger from '../../logger';
-const { hashPassword, protect } = local.hooks;
 // Don't remove this comment. It's needed to format import lines nicely.
 
-const {authenticate} = feathersAuthentication.hooks;
+const { authenticate } = authentication.hooks;
 
 export default {
   before: {
     all: [
+      // authenticate('jwt'),
       async (context: HookContext): Promise<any> => {
         logger.info(`API: ${context.path} calling ${context.method} method`);
         return context;
       }
     ],
-    find: [ ],
-    get: [ ],
-    create: [ hashPassword('password') ],
-    update: [ hashPassword('password'),  authenticate('jwt') ],
-    patch: [ hashPassword('password'),  authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    find: [],
+    get: [],
+    create: [],
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {
-    all: [ protect('password') ],
+    all: [],
     find: [],
     get: [],
     create: [],
