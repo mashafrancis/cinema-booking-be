@@ -2,6 +2,7 @@
   "host": "localhost",
   "port": 3030,
   "public": "../public/",
+  "siteUrl": "http://cinema-booking.com:3000",
   "paginate": {
     "default": 10,
     "max": 50
@@ -30,13 +31,19 @@
     "oauth": {
       "redirect": "/",
       "google": {
-        "key": "",
-        "secret": "",
+        "key": "98545110573-f1u6nsvb06krcnbrqt37vo1hgr0cbib6.apps.googleusercontent.com",
+        "secret": "9P6J4yLQ_NtHyVhn--r4som1",
         "scope": [ "openid", "email", "profile" ],
         "redirect_uri": "http://cinema-booking.com:3000",
         "callback": "http://127.0.0.1:3030/oauth/google/callback",
         "nonce": true
       }
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "jwt-token",
+      "httpOnly": false,
+      "secure": false
     }
   },
   "postgres": "postgres://postgres:@localhost:5432/cinemadb"

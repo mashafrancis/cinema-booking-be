@@ -1,39 +1,41 @@
 // See http://docs.sequelizejs.com/en/latest/docs/models-definition/
 // for more of what you can do here.
-import {Sequelize, DataTypes, Model} from 'sequelize';
-import {Application} from '../declarations';
-import {HookReturn} from 'sequelize/types/lib/hooks';
+import { Sequelize, DataTypes, Model } from 'sequelize';
+import { Application } from '../declarations';
+import { HookReturn } from 'sequelize/types/lib/hooks';
 import {uid} from '../utils/fancyGenerator';
 
 export default function (app: Application): typeof Model {
   const sequelizeClient: Sequelize = app.get('sequelizeClient');
-  const users = sequelizeClient.define('users', {
+  const tickets = sequelizeClient.define('tickets', {
 
     id: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
+      // primaryKey: true,
       defaultValue: uid.generate()
     },
-    googleId: {type: DataTypes.STRING},
-    email: {
+    movieId: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
-    avatar: {
+    summary: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    image: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
-    password: {
+    year: {
       type: DataTypes.STRING,
       allowNull: false
     }
-
   }, {
     hooks: {
       beforeCount(options: any): HookReturn {
@@ -43,12 +45,12 @@ export default function (app: Application): typeof Model {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  (users as any).associate = function (models: any): void {
+  (tickets as any).associate = function (models: any): void {
     // Define associations here
     // See http://docs.sequelizejs.com/en/latest/docs/associations/
-    const {bookings} = models;
-    users.hasMany(bookings);
+    const { bookings } = models;
+    tickets.hasOne(bookings);
   };
 
-  return users;
+  return tickets;
 }
